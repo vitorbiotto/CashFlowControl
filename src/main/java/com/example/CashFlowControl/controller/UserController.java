@@ -8,20 +8,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:3000") //Permite que o react acesse a API
+@RequestMapping("/api/v1/users")
+@CrossOrigin(origins = "http://localhost:5173") //Permite que o react acesse a API
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping
-    public List<User> listAll() {
-        return userService.findAll();
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping
     public User create(@RequestBody User user) {
-        return userService.save(user);
+        return userService.create(user);
+    }
+
+    @GetMapping
+    public List<User> findAll() {
+        return userService.findAll();
     }
 }

@@ -11,13 +11,14 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public User save(User user) {
-        if (user.getDate() == null) user.setDate(LocalDate.now());
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-        return userRepository.save(user);
+    public User create(User user) {
+        return this.userRepository.save(user);
     }
 
     public List<User> findAll() {
