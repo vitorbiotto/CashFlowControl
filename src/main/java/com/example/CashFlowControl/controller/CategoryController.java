@@ -26,4 +26,15 @@ public class CategoryController {
     public List<Category> findAll(@RequestParam(required = false) Long userId) {
         return categoryService.findAll(userId);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@RequestParam Long categoryId) {
+        categoryService.deleteById(categoryId);
+    }
+
+    @PutMapping("/{id}")
+    public Category updateById(@PathVariable Long categoryId,
+                               @RequestBody Category category) {
+        return categoryService.updateById(categoryId, category);
+    }
 }

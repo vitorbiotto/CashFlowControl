@@ -26,4 +26,15 @@ public class RecurrenceController {
     public List<Recurrence> findAll(@RequestParam(required = false) Long userId) {
         return recurrenceService.findAll(userId);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@RequestParam Long recurrenceId) {
+        recurrenceService.deleteById(recurrenceId);
+    }
+
+    @PutMapping("/{id}")
+    public Recurrence updateById(@PathVariable Long recurrenceId,
+                                 @RequestBody Recurrence recurrence) {
+        return recurrenceService.updateById(recurrenceId, recurrence);
+    }
 }

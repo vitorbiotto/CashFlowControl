@@ -24,4 +24,23 @@ public class RecurrenceService {
 
         return this.recurrenceRepository.findAll();
     }
+
+    public void deleteById(Long recurrenceId) {
+        this.recurrenceRepository.deleteById(recurrenceId);
+    }
+
+    public Recurrence updateById(Long recurrenceId, Recurrence newRecurrence) {
+
+        Recurrence oldRecurrence = recurrenceRepository.findById(recurrenceId)
+                .orElseThrow(() -> new RuntimeException("Recurrence not found with id " + recurrenceId));
+
+        oldRecurrence.setUser(newRecurrence.getUser());
+        oldRecurrence.setStartDate(newRecurrence.getStartDate());
+        oldRecurrence.setRecurrenceFrequency(newRecurrence.getRecurrenceFrequency());
+        oldRecurrence.setIntervalValue(newRecurrence.getIntervalValue());
+        oldRecurrence.setDueDate(newRecurrence.getDueDate());
+        oldRecurrence.setActive(newRecurrence.getActive());
+
+        return recurrenceRepository.save(oldRecurrence);
+    }
 }

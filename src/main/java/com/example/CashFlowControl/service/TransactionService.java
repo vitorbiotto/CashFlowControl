@@ -1,6 +1,7 @@
 package com.example.CashFlowControl.service;
 
 import com.example.CashFlowControl.entity.Transaction;
+import com.example.CashFlowControl.entity.User;
 import com.example.CashFlowControl.entity.enums.TransactionType;
 import com.example.CashFlowControl.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class TransactionService {
     }
 
     public Transaction create(Transaction transaction) {
-        return this.transactionRepository.save(transaction);
+        return transactionRepository.save(transaction);
     }
 
     public List<Transaction> findAll(Long userId,
@@ -29,12 +30,33 @@ public class TransactionService {
         if (userId == null) return this.transactionRepository.findAll();
 
         if (from != null && to != null)
-            return this.transactionRepository.findByUserIdAndDueDateBetween(userId, from, to);
+            return transactionRepository.findByUserIdAndDueDateBetween(userId, from, to);
 
-        if (type != null) return this.transactionRepository.findByUserIdAndType(userId, type);
+        if (type != null) return transactionRepository.findByUserIdAndType(userId, type);
 
-        if (categoryId != null) return this.transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
+        if (categoryId != null) return transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
 
-        return this.transactionRepository.findByUserId(userId);
+        return transactionRepository.findByUserId(userId);
+    }
+
+    public void deleteById(Long transactionId) {
+        transactionRepository.deleteById(transactionId);
+    }
+
+    public Transaction updateById(Long transactionId, Transaction newTransaction) {
+
+        Transaction oldTransaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found with id " + transactionId));
+
+        oldTransaction.setUser(newTransaction.getUser());
+        oldTransaction.setCategory(newTransaction.getCategory());
+        oldTransaction.setType(newTransaction.getType());
+        oldTransaction.setDescription(newTransaction.getDescription());
+        oldTransaction.setAmount(newTransaction.getAmount());
+        oldTransaction.setDueDate(newTransaction.getDueDate());
+        oldTransaction.setPaidDate(newTransaction.getPaidDate());
+        oldTransaction.setRecurrence(newTransaction.getRecurrence());
+
+        return transactionRepository.save(oldTransaction);
     }
 }

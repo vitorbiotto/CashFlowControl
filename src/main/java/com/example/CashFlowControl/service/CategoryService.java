@@ -25,4 +25,21 @@ public class CategoryService {
 
         return this.categoryRepository.findAll();
     }
+
+    public void deleteById(Long categoryId) {
+        categoryRepository.deleteById(categoryId);
+    }
+
+    public Category updateById(Long categoryId, Category newCategory) {
+
+        Category oldCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found with id " + categoryId));
+
+        oldCategory.setUser(newCategory.getUser());
+        oldCategory.setName(newCategory.getName());
+        oldCategory.setCategoryType(newCategory.getCategoryType());
+        oldCategory.setColor(newCategory.getColor());
+
+        return categoryRepository.save(oldCategory);
+    }
 }

@@ -21,7 +21,7 @@ public class TransactionController {
 
     @PostMapping
     public Transaction create(@RequestBody Transaction transaction) {
-        return this.transactionService.create(transaction);
+        return transactionService.create(transaction);
     }
 
     @GetMapping
@@ -30,6 +30,17 @@ public class TransactionController {
                                      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
                                      @RequestParam(required = false) TransactionType type,
                                      @RequestParam(required = false) Long categoryId) {
-        return this.transactionService.findAll(userId, from, to, type, categoryId);
+        return transactionService.findAll(userId, from, to, type, categoryId);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@RequestParam Long transactionId) {
+        transactionService.deleteById(transactionId);
+    }
+
+    @PutMapping("/{id}")
+    public Transaction updateById(@PathVariable Long transactionId,
+                                  @RequestBody Transaction transaction) {
+        return transactionService.updateById(transactionId, transaction);
     }
 }

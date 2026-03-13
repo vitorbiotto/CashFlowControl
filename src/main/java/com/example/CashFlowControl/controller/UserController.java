@@ -27,4 +27,15 @@ public class UserController {
     public List<User> findAll() {
         return userService.findAll();
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@RequestParam Long userId) {
+        userService.deleteById(userId);
+    }
+
+    @PutMapping("/{id}")
+    public User updateById(@PathVariable Long userId,
+                           @RequestBody User user) {
+        return userService.updateById(userId, user);
+    }
 }
